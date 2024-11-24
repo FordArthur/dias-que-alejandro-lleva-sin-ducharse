@@ -3,80 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Days Counter</title>
+    <title>No me navajees xfa</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            font-family: Arial, sans-serif;
             background-color: #f0f0f0;
         }
-        .counter {
-            text-align: center;
-            font-size: 5em;
-            color: #333;
-            position: relative;
+        #counter {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #232323;
+            margin-bottom: 30px;
         }
-        .fade-image {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 200px;
-            height: 200px;
-            transform: translate(-50%, -50%);
+        #image-container {
+            width: 300px;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.5s ease;
+        }
+        #image-container img {
+            width: 100%;
         }
     </style>
 </head>
 <body>
-    <div class="counter" id="counter">
-        0
-        <img src="hola.png" class="fade-image" id="fadeImage" alt="Fading Image">
+    <div id="counter">0</div>
+    <div id="image-container">
+        <img src="https://cdn.discordapp.com/attachments/736298436885872731/1310179796051038228/2024-11-24-104639_339x197_scrot.png?ex=67444785&is=6742f605&hm=d5989a6d042e36e77f884574ea5d0d7beb8e3f886848740b265aae454b39f050&" alt="Sho">
     </div>
 
     <script>
-        function calculateDaysPassed(specifiedDate) {
+        const startDate = new Date("2024-11-22");
+
+        function updateCounter() {
             const today = new Date();
-            const date = new Date(specifiedDate);
-            const timeDiff = today - date;
-            const daysPassed = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-            return daysPassed;
+            const timeDiff = today - startDate;
+            const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            document.getElementById('counter').textContent = `${daysDiff}`;
         }
 
-        function updateImageOpacity(event) {
-            const counterElement = document.getElementById('counter');
-            const imageElement = document.getElementById('fadeImage');
-            if (imageElement) {
-                const rect = counterElement.getBoundingClientRect();
-                const distanceX = event.clientX - (rect.left + rect.width / 2);
-                const distanceY = event.clientY - (rect.top + rect.height / 2);
-                const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-                const maxDistance = Math.max(window.innerWidth, window.innerHeight) / 2;
-                const opacity = 1 - Math.min(distance / maxDistance, 1);
-                imageElement.style.opacity = opacity;
-            } else {
-                console.error('Image element not found');
-            }
-        }
+        updateCounter();
 
-        document.addEventListener('mousemove', updateImageOpacity);
+        const counterElement = document.getElementById('counter');
+        const imageContainer = document.getElementById('image-container');
 
-        const specifiedDate = '2024-11-22'; // Update with your specified date
-        const daysPassed = calculateDaysPassed(specifiedDate);
-        document.getElementById('counter').innerText = daysPassed;
+        document.body.addEventListener('mousemove', (e) => {
+            const rect = counterElement.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            const distance = Math.hypot(centerX - e.clientX, centerY - e.clientY);
 
-        window.onload = function() {
-            const imageElement = document.getElementById('fadeImage');
-            if (imageElement) {
-                console.log('Image loaded successfully');
-            } else {
-                console.error('Image element not found on page load');
-            }
-        };
+            const maxDistance = Math.max(window.innerWidth, window.innerHeight) / 2;
+            const opacity = 1 - Math.min(distance / maxDistance, 1);
+            imageContainer.style.opacity = opacity;
+        });
     </script>
 </body>
 </html>
