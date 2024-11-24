@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>No me navajees por esto porfa</title>
+    <title>Days Counter</title>
     <style>
         body {
             display: flex;
@@ -18,11 +18,25 @@
             text-align: center;
             font-size: 5em;
             color: #333;
+            position: relative;
+        }
+        .fade-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200px;
+            height: 200px;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s;
         }
     </style>
 </head>
 <body>
-    <div class="counter" id="counter">0</div>
+    <div class="counter" id="counter">
+        0
+        <img src="hola.png" class="fade-image" id="fadeImage" alt="Fading Image">
+    </div>
 
     <script>
         function calculateDaysPassed(specifiedDate) {
@@ -33,9 +47,36 @@
             return daysPassed;
         }
 
-        const specifiedDate = '2024-11-22';
+        function updateImageOpacity(event) {
+            const counterElement = document.getElementById('counter');
+            const imageElement = document.getElementById('fadeImage');
+            if (imageElement) {
+                const rect = counterElement.getBoundingClientRect();
+                const distanceX = event.clientX - (rect.left + rect.width / 2);
+                const distanceY = event.clientY - (rect.top + rect.height / 2);
+                const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+                const maxDistance = Math.max(window.innerWidth, window.innerHeight) / 2;
+                const opacity = 1 - Math.min(distance / maxDistance, 1);
+                imageElement.style.opacity = opacity;
+            } else {
+                console.error('Image element not found');
+            }
+        }
+
+        document.addEventListener('mousemove', updateImageOpacity);
+
+        const specifiedDate = '2024-11-22'; // Update with your specified date
         const daysPassed = calculateDaysPassed(specifiedDate);
         document.getElementById('counter').innerText = daysPassed;
+
+        window.onload = function() {
+            const imageElement = document.getElementById('fadeImage');
+            if (imageElement) {
+                console.log('Image loaded successfully');
+            } else {
+                console.error('Image element not found on page load');
+            }
+        };
     </script>
 </body>
 </html>
