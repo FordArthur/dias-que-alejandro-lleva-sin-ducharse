@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Days Counter</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .counter {
+            text-align: center;
+            font-size: 5em;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="counter" id="counter">0</div>
+
+    <script>
+        function calculateDaysPassed(specifiedDate) {
+            const today = new Date();
+            const date = new Date(specifiedDate);
+            const timeDiff = today - date;
+            const daysPassed = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            return daysPassed;
+        }
+
+        const specifiedDate = '2024-11-01';
+        const daysPassed = calculateDaysPassed(specifiedDate);
+        document.getElementById('counter').innerText = daysPassed;
+    </script>
+</body>
+</html>
